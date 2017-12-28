@@ -4,6 +4,7 @@ import random
 import pprint
 import os
 
+# Dictionary for state names and capitals
 capitals = {'Alabama': 'Montgomery', 'Alaska': 'Juneau', 'Arizona': 'Phoenix',
    'Arkansas': 'Little Rock', 'California': 'Sacramento', 'Colorado': 'Denver',
    'Connecticut': 'Hartford', 'Delaware': 'Dover', 'Florida': 'Tallahassee',
@@ -22,41 +23,45 @@ capitals = {'Alabama': 'Montgomery', 'Alaska': 'Juneau', 'Arizona': 'Phoenix',
    'Montpelier', 'Virginia': 'Richmond', 'Washington': 'Olympia', 'West Virginia': 'Charleston',
             'Wisconsin': 'Madison', 'Wyoming': 'Cheyenne'}
 
-print(pprint.pprint(capitals,indent=True))
 
-os.chdir('/Users/kond1493/pythondirtest')
+#  Create the quiz and answer key files.
+#  Write out the header for the quiz.
+def prepareQuiz():
 
-for quizNum in range(35):
-# TODO: Create the quiz and answer key files.
-    quizFileObj = open('capitalsquiz%s.txt' %(quizNum + 1), 'w')
-    answerKeyFileObj = open('capitalsquiz_answers%s.txt' %(quizNum + 1), 'w')
+    for quizNum in range(35):
 
-# TODO: Write out the header for the quiz.
-    quizFileObj.write('Name:\n \n Date: \n \n Period:\n\n')
-    quizFileObj.write((' ' * 20) + 'State Capitals Quiz (Form %s)' % (quizNum + 1))
-    quizFileObj.write('\n\n')
+        quizFileObj = open('capitalsquiz%s.txt' %(quizNum + 1), 'w')
+        answerKeyFileObj = open('capitalsquiz_answers%s.txt' %(quizNum + 1), 'w')
+        quizFileObj.write('Name:\n \n Date: \n \n Period:\n\n')
+        quizFileObj.write((' ' * 20) + 'State Capitals Quiz (Form %s)' % (quizNum + 1))
+        quizFileObj.write('\n\n')
 
-# TODO: Shuffle the order of the states.
-    states = list(capitals.keys())
-    random.shuffle(states)
 
-# TODO: Loop through all 50 states, making a question for each.
+#  Shuffle the order of the states.
+        states = list(capitals.keys())
+        random.shuffle(states)
 
-    for questionNum in range(50):
-        correctAnswer = capitals[states[questionNum]]
-        wrongAnswers = list(capitals.values())
-        del wrongAnswers[wrongAnswers.index(correctAnswer)]
-        wrongAnswers = random.sample(wrongAnswers,3)
-        answerOptions = wrongAnswers + [correctAnswer]
-        random.shuffle(answerOptions)
+#  Loop through all 50 states, making a question for each.
 
-        # Write the question and the answer options to the quiz file.
-        quizFileObj.write('%s. What is the capital of %s?\n' % (questionNum + 1, states[questionNum]))
-        for i in range(4):
-            quizFileObj.write(' %s. %s\n' % ('ABCD'[i], answerOptions[i]))
-        quizFileObj.write('\n')
+        for questionNum in range(50):
+            correctAnswer = capitals[states[questionNum]]
+            wrongAnswers = list(capitals.values())
+            del wrongAnswers[wrongAnswers.index(correctAnswer)]
+            wrongAnswers = random.sample(wrongAnswers,3)
+            answerOptions = wrongAnswers + [correctAnswer]
+            random.shuffle(answerOptions)
 
-        answerKeyFileObj.write('%s. %s\n' % (questionNum + 1, 'ABCD'[answerOptions.index(correctAnswer)]))
+            # Write the question and the answer options to the quiz file.
+            quizFileObj.write('%s. What is the capital of %s?\n' % (questionNum + 1, states[questionNum]))
+            for i in range(4):
+                quizFileObj.write(' %s. %s\n' % ('ABCD'[i], answerOptions[i]))
+            quizFileObj.write('\n')
 
-quizFileObj.close()
-answerKeyFileObj.close()
+            answerKeyFileObj.write('%s. %s\n' % (questionNum + 1, 'ABCD'[answerOptions.index(correctAnswer)]))
+    quizFileObj.close()
+    answerKeyFileObj.close()
+
+
+if __name__ == '__main__':
+    prepareQuiz()
+
